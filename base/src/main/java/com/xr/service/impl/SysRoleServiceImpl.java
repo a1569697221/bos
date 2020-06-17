@@ -1,5 +1,6 @@
 package com.xr.service.impl;
 
+import com.xr.entity.RoleDept;
 import com.xr.entity.SysRole;
 import com.xr.mapper.SysRoleMapper;
 import com.xr.service.SysRoleService;
@@ -28,5 +29,20 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public List<Map<String,Object>> findUserNameByRoleList(String roleName, Integer limit, Integer page) {
         return sysRoleMapper.findUserNameByRoleList(roleName,limit,page);
+    }
+
+    @Override
+    public void addRole(RoleDept roleDept) {
+        sysRoleMapper.addRole(roleDept);
+    }
+
+    @Override
+    public void deleteRole(Integer id) {
+        sysRoleMapper.deleteRole(id);
+    }
+
+    @Override
+    public void updateRole(RoleDept roleDept, Integer id) {
+        sysRoleMapper.updateRole(roleDept,id);
     }
 }

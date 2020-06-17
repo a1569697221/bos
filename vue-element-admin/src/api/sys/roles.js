@@ -10,7 +10,7 @@ export function add(data) {
 
 export function deleteUser(id) {
   return request({
-    url: '/role/delete',
+    url: '/role/del',
     method: 'get',
     params: { id }
   })

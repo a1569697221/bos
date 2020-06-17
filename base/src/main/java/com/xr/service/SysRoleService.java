@@ -1,5 +1,6 @@
 package com.xr.service;
 
+import com.xr.entity.RoleDept;
 import com.xr.entity.SysRole;
 
 import java.util.List;
@@ -11,4 +12,10 @@ public interface SysRoleService {
     List<Map<String,Object>> list();
 
     List<Map<String,Object>> findUserNameByRoleList(String roleName,Integer limit,Integer page);
+
+    void addRole(RoleDept roleDept);
+
+    void deleteRole(Integer id);
+
+    void updateRole(RoleDept roleDept,Integer id);
 }

@@ -145,19 +145,19 @@ export const asyncRoutes = [
       {
         path: 'user',
         component: () => import('../views/sys/user'),
-        name: '用户管理',
-        meta: { title: '用户管理' ,roles: ['admin']}
+        name: '员工管理',
+        meta: { title: '员工管理' ,roles: ['admin']}
       },
       {
         path: 'role',
         component: () => import('../views/sys/roles'),
-        name: '角色管理',
-        meta: { title: '角色管理' ,roles: ['admin']}
+        name: '岗位管理',
+        meta: { title: '岗位管理' ,roles: ['admin']}
       },
       {
         path: 'menu',
         component: () => import('../views/sys/menus'),
-        name: '菜单管理',
+        name: '权限管理',
         meta: { title: '菜单管理' ,roles: ['admin']}
       }
     ]

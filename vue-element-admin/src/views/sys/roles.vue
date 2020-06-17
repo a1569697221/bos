@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.username" placeholder="用户名" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.username" placeholder="请输入岗位名称" style="width: 200px;" class="filter-item"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
       查询
       </el-button>
@@ -94,23 +94,23 @@
           </el-select>
         </el-form-item>
         <el-form-item label="岗位名称名" prop="username">
-          <el-input placeholder="请输入岗位名" v-model="temp.username" />
+          <el-input placeholder="请输入岗位名" v-model="temp.remark" />
         </el-form-item>
         <el-form-item label="岗位简称" prop="password">
-          <el-input placeholder="请输入简称" v-model="temp.password" show-password></el-input>
+          <el-input placeholder="请输入简称" v-model="temp.name"></el-input>
         </el-form-item>
         <el-form-item label="创建者姓名" prop="mobile">
-          <el-input v-model="temp.mobile" readonly="readonly"/>
+          <el-input v-model="createBy" readonly="readonly"/>
         </el-form-item>
         <el-form-item label="创建时间" prop="mobile">
-          <el-input v-model="temp.mobile" readonly="readonly"/>
+          <el-input v-model="createTime" readonly />
         </el-form-item>
         <el-form-item label="岗位描述">
           <el-input
             type="textarea"
             :rows="4"
-            placeholder="请输入自我简介"
-            v-model="temp.introduction">
+            placeholder="请输入岗位描述"
+            v-model="temp.describe">
           </el-input>
         </el-form-item>
       </el-form>
@@ -122,7 +122,7 @@
           dialogStatus==='create'?createData():updateData()
           dialogStatus需要我们根据情况去改变
         -->
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData(createTime)">
           确认
         </el-button>
       </div>
@@ -144,6 +144,8 @@
     admin:'admin',
     data() {
       return {
+				createBy:'超级管理员',
+				createTime:'',//当前时间
         tableKey: 0,
         list: null, // 后台返回，给数据表格展示的数据
         total: 0, // 总记录数
@@ -178,6 +180,14 @@
       this.getList()
       // 在创建时初始化获得部门信息
       this.getGroupDept()
+				var _this = this;
+				let yy = new Date().getFullYear();
+				let mm = new Date().getMonth()+1;
+				let dd = new Date().getDate();
+				let hh = new Date().getHours();
+				let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
+				let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
+				_this.createTime = yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss
     },
     methods: {
       // 获得分好组的部门信息
@@ -264,7 +274,7 @@
         })
       },
       // 执行修改操作
-      updateData() {
+      updateData(createTime) {
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
@@ -289,7 +299,7 @@
       },
       handleDelete(row) {
         // 先弹确认取消框
-        this.$confirm('确认删除【'+row.username+'】的信息吗?', '提示', {
+        this.$confirm('确认删除角色【'+row.remark+'】吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

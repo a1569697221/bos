@@ -1,8 +1,11 @@
 package com.xr.mapper;
 
+import com.xr.entity.RoleDept;
 import com.xr.entity.SysRole;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +48,28 @@ public interface SysRoleMapper {
              "limit #{page},#{limit}",
              "</script>"})
     List<Map<String,Object>> findUserNameByRoleList(@Param("roleName") String roleName,@Param("limit") Integer limit,@Param("page") Integer page);
+
+    /**
+     * 新增角色
+     * @param roleDept
+     */
+    @Select({"insert into sys_role(id,name,remark,dept_id,create_by,create_time,last_update_time,`describe`) " ,
+            "values(null,#{r.name},#{r.remark},#{r.deptId},#{r.createBy},NOW(),NOW(),#{r.describe})"})
+    void addRole(@Param("r") RoleDept roleDept);
+
+    /**
+     * 根据id删除角色
+     * @param id
+     */
+    @Delete("delete from sys_role where id = #{id}")
+    void deleteRole(Integer id);
+
+    /**
+     * 修改角色信息
+     * @param roleDept
+     */
+    @Update({"update sys_role set name = #{r.name},remark = #{r.remark}," ,
+            "dept_id = #{r.deptId},create_by = #{r.createBy}," +
+            "last_update_time = NOW(),`describe` = #{r.describe} where id = #{id}"})
+    void updateRole(@Param("r") RoleDept roleDept,@Param("id") Integer id);
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.username" placeholder="用户名" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="listQuery.username" placeholder="请输入用户名" style="width: 200px;" class="filter-item"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
         查询角色
       </el-button>
@@ -19,43 +19,42 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="创建时间" width="150px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="姓名" min-width="150px">
+      <el-table-column label="姓名" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号码" min-width="150px">
+      <el-table-column label="手机号码" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.mobile }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="所在部门" min-width="150px">
+      <el-table-column label="所在部门" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.deptId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="在职状态" min-width="150px">
+      <el-table-column label="在职状态" width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.status==1?'在职':'离职' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="角色" min-width="150px">
+      <el-table-column label="角色" min-width="100px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.deptId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户名" min-width="150px">
+      <el-table-column label="用户名" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.username }}</span>
         </template>
