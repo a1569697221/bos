@@ -39,8 +39,9 @@ public class UsersController {
         List<SysUser> list = usersService.list(sysUser);
         String username = sysUser.getUsername();
         List<SysUser> listpage = usersService.listpage(username, (page-1)*limit, limit);
-        System.out.println(list);
-        /*for (int i =0;i<listpage.size();i++){
+        List<SysUser> user = usersService.user();
+        System.out.println(user);
+        /*for (int i =0;i<list.size();i++){
             listpage.get(i).setCreateTime(list.get(i).getCreateTime());
         }*/
         ResponseResult result = new ResponseResult();
@@ -59,6 +60,7 @@ public class UsersController {
         String password = new Md5Hash(sysUser.getPassword(),salt,2).toString();
         sysUser.setSalt(salt);
         sysUser.setPassword(password);
+        System.out.println(sysUser);
         usersService.add(sysUser);
         ResponseResult result = new ResponseResult();
         result.getData().put("message","添加成功");
@@ -99,6 +101,8 @@ public class UsersController {
         // 获得登录的主题
         Subject subject = SecurityUtils.getSubject();
         // 调用登录方法
+        System.out.println(sysUser);
+        System.out.println(token);
         subject.login(token);
         // 返回给前台的toke，唯一标识用户
         result.getData().put("token",subject.getSession().getId());

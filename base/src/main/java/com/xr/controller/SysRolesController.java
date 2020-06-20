@@ -28,6 +28,7 @@ public class SysRolesController {
             }
             System.out.println();
         }*/
+        System.out.println(list.size());
         //条件查询分页
         List<Map<String, Object>> listpage = sysRoleService.findUserNameByRoleList(username, limit, (page-1)*limit);
         result.getData().put("items", listpage);

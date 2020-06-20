@@ -37,12 +37,9 @@ public interface UsersMapper {
      * @param user
      */
     @Insert("insert into sys_user" +
-            " values(0,#{u.username},#{u.password},#{u.salt},#{u.email},#{u.mobile}," +
+            " values(0,#{u.name},#{u.username},#{u.password},#{u.salt},#{u.email},#{u.mobile}," +
             "1,#{u.deptId},'admin',NOW(),'admin',NOW(),0,#{u.introduction},null)")
     void add (@Param("u") SysUser user);
-//    @Insert("insert into sys_user(username,password,email,mobile,dept_Id,introduction) values(" +
-//            "#{u.username},#{u.password},#{u.email},#{u.mobile},#{u.deptId},#{u.introduction})")
-//    void add (@Param("u") SysUser user);
 
     /**
      * 根据id删除用户
@@ -55,7 +52,7 @@ public interface UsersMapper {
      * 修改用户信息
      * @param user
      */
-    @Update("update sys_user set username = #{u.username},password = #{u.password},salt = #{u.salt},email = #{u.email}," +
+    @Update("update sys_user set name = #{u.name},username = #{u.username},password = #{u.password},salt = #{u.salt},email = #{u.email}," +
             "mobile = #{u.mobile},dept_Id = #{u.deptId},introduction = #{u.introduction},last_Update_Time = NOW() where id = #{u.id}")
     void update(@Param("u") SysUser user);
 
@@ -71,4 +68,7 @@ public interface UsersMapper {
             "limit #{page},#{limit}",
             "</script>"})
     List<SysUser> listpage(@Param("username") String username,@Param("page") Integer page,@Param("limit") Integer limit);
+
+    @Select("select * from sys_user")
+    List<SysUser> user();
 }

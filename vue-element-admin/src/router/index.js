@@ -145,20 +145,39 @@ export const asyncRoutes = [
       {
         path: 'user',
         component: () => import('../views/sys/user'),
-        name: '员工管理',
-        meta: { title: '员工管理' ,roles: ['admin']}
+        name: 'user',
+        meta: { title: '员工管理', roles: ['admin'] }
       },
       {
         path: 'role',
         component: () => import('../views/sys/roles'),
-        name: '岗位管理',
-        meta: { title: '岗位管理' ,roles: ['admin']}
+        name: 'role',
+        meta: { title: '岗位管理', roles: ['admin'] }
       },
       {
         path: 'menu',
         component: () => import('../views/sys/menus'),
-        name: '权限管理',
-        meta: { title: '菜单管理' ,roles: ['admin']}
+        name: 'menu',
+        meta: { title: '菜单管理', roles: ['admin'] }
+      },
+      {
+        path: 'log',
+        component: () => import('../views/sys/log'),
+        name: 'log',
+        meta: { title: '日志管理', roles: ['admin'] }
+      },
+      {
+        path: 'logdetails',
+        component: () => import('../views/sys/news/logdetails'),
+        name: 'details',
+        meta: { title: '查看日志', noCache: true, activeMenu: '../views/sys/news/logdetails' },
+        hidden: true
+      },
+      {
+        path: 'test',
+        component: () => import('../views/sys/test'),
+        name: '测试',
+        meta: { title: '测试', roles: ['admin'] }
       }
     ]
   },
@@ -169,6 +188,7 @@ export const asyncRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
+
   routes: constantRoutes
 })
 

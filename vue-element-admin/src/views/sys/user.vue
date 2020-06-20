@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.username" placeholder="请输入用户名" style="width: 200px;" class="filter-item"/>
+      <el-backtop target=".page-component__scroll .el-scrollbar__wrap" />
+      <el-input v-model="listQuery.username" placeholder="请输入用户名" style="width: 200px;" class="filter-item" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
-        查询角色
+        查询
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
@@ -89,40 +90,47 @@
             <el-option-group
               v-for="group in deptList"
               :key="group.id"
-              :label="group.name">
+              :label="group.name"
+            >
               <el-option-group
                 v-for="items in group.items"
                 :key="items.id"
-                :label="items.name">
+                :label="items.name"
+              >
                 <el-option
                   v-for="item in items.items"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-option-group>
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="姓名" prop="username">
-          <el-input placeholder="请输入用户名" v-model="temp.username" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="temp.username" placeholder="请输入用户名" show-word-limit maxlength="12" minlength="6" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input placeholder="请输入密码" v-model="temp.password" show-password></el-input>
+          <el-input v-model="temp.password" placeholder="请输入密码" show-password minlength="6" maxlength="16" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="mobile">
+          <el-input v-model="temp.name" size="medium" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="temp.email" />
         </el-form-item>
         <el-form-item label="手机" prop="mobile">
-          <el-input v-model="temp.mobile" />
+          <el-input v-model="temp.mobile" maxlength="13" show-word-limit />
         </el-form-item>
         <el-form-item label="自我简介">
           <el-input
+            v-model="temp.introduction"
             type="textarea"
             :rows="4"
             placeholder="请输入岗位描述"
-            v-model="temp.introduction">
-          </el-input>
+            maxlength="200"
+            show-word-limit
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -142,173 +150,111 @@
 </template>
 
 <script>
-  //
-  import { add, update, list, deleteUser } from '@/api/sys/user'
-  import {groupDept} from "@/api/sys/dept";
-  import waves from '@/directive/waves' // waves directive
-  import { parseTime } from '@/utils'
-  import Pagination from '@/components/Pagination' // 分页组件
-  export default {
-    name: 'userTable',
-    components: { Pagination },
-    directives: { waves },
-    data() {
-      return {
-        tableKey: 0,
-        list: null, // 后台返回，给数据表格展示的数据
-        total: 0, // 总记录数
-        listLoading: true, // 是否使用动画
-        listQuery: {
-          page: 1, // 分页需要的当前页
-          limit: 10, // 分页需要的每页显示多少条
-          sex: 1,
-          username: ''
-        },
-        deptList: [], // 后台查询出来，分好组的部门信息
-        temp: { // 添加、修改时绑定的表单数据
-          id: undefined,
-          name: '',
-          password: '',
-          email: '',
-          mobile: '',
-          deptId: '',
-          introduction: '',
-        },
-        title: '添加', // 对话框显示的提示 根据dialogStatus create
-        dialogFormVisible: false, // 是否显示对话框
-        dialogStatus: '', // 表示表单是添加还是修改的
-        rules: {
-          // 校验规则
-          username: [{ required: true, message: '用户名必填', trigger: 'blur' }]
-        }
+//
+import { add, update, list, deleteUser } from '@/api/sys/user'
+import { groupDept } from '@/api/sys/dept'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // 分页组件
+export default {
+  name: 'UserTable',
+  components: { Pagination },
+  directives: { waves },
+  data() {
+    return {
+      tableKey: 0,
+      list: null, // 后台返回，给数据表格展示的数据
+      total: 0, // 总记录数
+      listLoading: true, // 是否使用动画
+      listQuery: {
+        page: 1, // 分页需要的当前页
+        limit: 10, // 分页需要的每页显示多少条
+        sex: 1,
+        username: ''
+      },
+      deptList: [], // 后台查询出来，分好组的部门信息
+      temp: { // 添加、修改时绑定的表单数据
+        id: undefined,
+        name: '',
+        password: '',
+        email: '',
+        mobile: '',
+        deptId: '',
+        introduction: ''
+      },
+      title: '添加', // 对话框显示的提示 根据dialogStatus create
+      dialogFormVisible: false, // 是否显示对话框
+      dialogStatus: '', // 表示表单是添加还是修改的
+      rules: {
+        // 校验规则
+        username: [{ required: true, message: '用户名必填', trigger: 'blur' }]
+      }
+    }
+  },
+  // 创建实例时的钩子函数
+  created() {
+    this.getList()
+    // 在创建时初始化获得部门信息
+    this.getGroupDept()
+  },
+  methods: {
+    // 获得分好组的部门信息
+    getGroupDept() {
+      groupDept().then((response) => {
+        this.deptList = response.data.deptList
+      })
+    },
+    // 去后台取数据的
+    getList() {
+      // 开始转圈圈
+      this.listLoading = true
+      // debugger // 调试
+      list(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.total = response.data.total
+        // 转圈圈结束
+        this.listLoading = false
+      })
+    },
+    // 重置表单数据
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        username: '',
+        password: '',
+        email: '',
+        mobile: '',
+        deptId: '',
+        introduction: ''
       }
     },
-    // 创建实例时的钩子函数
-    created() {
-      this.getList()
-      // 在创建时初始化获得部门信息
-      this.getGroupDept()
-    },
-    methods: {
-      // 获得分好组的部门信息
-      getGroupDept(){
-        groupDept().then((response) => {
-          this.deptList = response.data.deptList
-        })
-      },
-      // 去后台取数据的
-      getList() {
-        // 开始转圈圈
-        this.listLoading = true
-        // debugger // 调试
-        list(this.listQuery).then(response => {
-          this.list = response.data.items
-          this.total = response.data.total
-          // 转圈圈结束
-          this.listLoading = false
-        })
-      },
+    // 显示添加的对话框
+    handleCreate() {
       // 重置表单数据
-      resetTemp() {
-        this.temp = {
-          id: undefined,
-          username: '',
-          password: '',
-          email: '',
-          mobile: '',
-          deptId: '',
-          introduction: '',
-        }
-      },
-      // 显示添加的对话框
-      handleCreate () {
-        // 重置表单数据
-        this.resetTemp()
-        // 点击确定时，是执行添加操作
-        this.dialogStatus = 'create'
-        this.title="添加角色"
-        // 显示对话框
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          // 表单清除验证
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      // 添加对话框里，点击确定，执行添加操作
-      createData() {
-        // 表单校验
-        this.$refs['dataForm'].validate((valid) => {
-          // 所有的校验都通过
-          if (valid) {
-            // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
-
-              // 关闭对话框
-              this.dialogFormVisible = false
-              // 刷新数据表格里的数据
-              this.getList()
-              // 显示一个通知
-              this.$notify({
-                title: '成功',
-                message: response.data.message,
-                type: 'success',
-                duration: 2000
-              })
-            })
-          }
-        })
-      },
-      // 显示修改对话框
-      handleUpdate(row) {
-        // 将row里面与temp里属性相同的值，进行copy
-        this.temp = Object.assign({}, row) // copy obj
-        // 将对话框里的确定点击时，改为执行修改操作
-        this.dialogStatus = 'update'
-        // 修改标题
-        this.title = '修改用户'
-        // 显示修改对话框
-        this.dialogFormVisible = true
-        this.$nextTick(() => {
-          // 清除校验
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      // 执行修改操作
-      updateData() {
-        this.$refs['dataForm'].validate((valid) => {
-          // 表单校验通过
-          if (valid) {
-            // 将temp拷贝到tempData
-            const tempData = Object.assign({}, this.temp)
-            // 进行ajax提交
-            update(tempData).then((response) => {
-              // 提交完毕，关闭对话框
-              this.dialogFormVisible = false
-              // 刷新数据表格
-              this.getList()
-              // 显示通知
-              this.$notify({
-                title: '成功',
-                message: response.data.message,
-                type: 'success',
-                duration: 2000
-              })
-            })
-          }
-        })
-      },
-      handleDelete(row) {
-        // 先弹确认取消框
-        this.$confirm('确认删除【'+row.username+'】的信息吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          // 调用ajax去后台删除
-          deleteUser(row.id).then((response) => {
-            // 刷新数据表格
+      this.resetTemp()
+      // 点击确定时，是执行添加操作
+      this.dialogStatus = 'create'
+      this.title = '添加角色'
+      // 显示对话框
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        // 表单清除验证
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    // 添加对话框里，点击确定，执行添加操作
+    createData() {
+      // 表单校验
+      this.$refs['dataForm'].validate((valid) => {
+        // 所有的校验都通过
+        if (valid) {
+          // 调用api里的sys里的user.js的ajax方法
+          add(this.temp).then((response) => {
+            // 关闭对话框
+            this.dialogFormVisible = false
+            // 刷新数据表格里的数据
             this.getList()
-            // ajax去后台删除
+            // 显示一个通知
             this.$notify({
               title: '成功',
               message: response.data.message,
@@ -316,14 +262,74 @@
               duration: 2000
             })
           })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-
-      }
+        }
+      })
+    },
+    // 显示修改对话框
+    handleUpdate(row) {
+      // 将row里面与temp里属性相同的值，进行copy
+      this.temp = Object.assign({}, row) // copy obj
+      // 将对话框里的确定点击时，改为执行修改操作
+      this.dialogStatus = 'update'
+      // 修改标题
+      this.title = '修改用户'
+      // 显示修改对话框
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        // 清除校验
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    // 执行修改操作
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        // 表单校验通过
+        if (valid) {
+          // 将temp拷贝到tempData
+          const tempData = Object.assign({}, this.temp)
+          // 进行ajax提交
+          update(tempData).then((response) => {
+            // 提交完毕，关闭对话框
+            this.dialogFormVisible = false
+            // 刷新数据表格
+            this.getList()
+            // 显示通知
+            this.$notify({
+              title: '成功',
+              message: response.data.message,
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    handleDelete(row) {
+      // 先弹确认取消框
+      this.$confirm('确认删除【' + row.username + '】的信息吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用ajax去后台删除
+        deleteUser(row.id).then((response) => {
+          // 刷新数据表格
+          this.getList()
+          // ajax去后台删除
+          this.$notify({
+            title: '成功',
+            message: response.data.message,
+            type: 'success',
+            duration: 2000
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
+}
 </script>

@@ -8,7 +8,6 @@ import com.xr.util.SysDeptGroupUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
@@ -27,6 +26,7 @@ public class SysDeptServiceImpl implements SysDeptService {
             deptList = groupUtil.getFirstDept(deptList);
             return deptList;
         }
+        System.out.println(deptList);
         return null;
     }
 }

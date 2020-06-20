@@ -1,8 +1,6 @@
 package com.xr.service;
 
-import com.xr.entity.SysDept;
 import com.xr.entity.SysUser;
-import com.xr.entity.SysUserExample;
 
 import java.util.List;
 
@@ -22,4 +20,6 @@ public interface UsersService {
     List<SysUser> list(SysUser sysUser);
 
     List<SysUser> listpage(String username,Integer page,Integer limit);
+
+    List<SysUser> user();
 }

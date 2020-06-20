@@ -31,14 +31,6 @@ public interface SysRoleMapper {
      * 分页查询
      * @return
      */
-
-    /*@Select({"<script>",
-            "select * from sys_user where 1=1 ",
-            "<when test='username!=null'>",
-                    "and username like '%${username}%'",
-            "</when>",
-            "limit #{page},#{limit}",
-            "</script>"})*/
     @Select({"<script>",
             "select r.id,r.name,r.remark,d.`name` dname,r.describe,r.create_time from sys_dept d,sys_role r " ,
             "where d.id = r.dept_id",

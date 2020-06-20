@@ -56,7 +56,7 @@
         </javaClientGenerator>
 
         <!-- 指定数据库表 保留Example例子 -->
-        <table schema="" tableName="sys_dept" domainObjectName="SysDept" />
+        <table schema="" tableName="sys_log" domainObjectName="SysLog" />
         <!--  <table schema="scott" tableName="product" domainObjectName="Product" />-->
         <!-- 指定数据库表 去除Example例子
         <table schema="scott" tableName="product" domainObjectName="Product"

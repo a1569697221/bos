@@ -1,13 +1,12 @@
 package com.xr.controller;
 
 import com.xr.config.ResponseResult;
-import com.xr.entity.SysDept;
 import com.xr.service.SysDeptService;
-//import com.xr.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+
+//import com.xr.util.ResponseResult;
 
 @RestController
 @RequestMapping("dept")
@@ -22,6 +21,7 @@ public class SysDeptController {
     @RequestMapping("groupDept")
     public ResponseResult groupDept(){
         ResponseResult result = new ResponseResult();
+        System.out.println(sysDeptService.getGroupDept());
         result.getData().put("deptList",sysDeptService.getGroupDept());
         return result;
     }

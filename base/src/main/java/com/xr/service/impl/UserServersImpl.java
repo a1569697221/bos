@@ -72,4 +72,8 @@ public class UserServersImpl implements UsersService {
         return usersMapper.listpage(username,page,limit);
     }
 
+    @Override
+    public List<SysUser> user() {
+        return usersMapper.user();
+    }
 }

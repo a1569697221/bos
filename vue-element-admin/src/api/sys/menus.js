@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function add(data) {
   return request({
-    url: '/role/add',
+    url: '/menu/add',
     method: 'post',
     data
   })
 }
 
-export function deleteUser(id) {
+export function del(id) {
   return request({
-    url: '/role/delete',
+    url: '/menu/delete',
     method: 'get',
     params: { id }
   })
@@ -18,7 +18,7 @@ export function deleteUser(id) {
 
 export function update(data) {
   return request({
-    url: '/role/update',
+    url: '/menu/update',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function update(data) {
 
 export function list(data) {
   return request({
-    url: '/role/list',
+    url: '/menu/list',
     method: 'post',
     data
   })
