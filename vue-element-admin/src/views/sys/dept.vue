@@ -2,11 +2,20 @@
   <div class="app-container">
     <div class="filter-container">
       <el-backtop target=".page-component__scroll .el-scrollbar__wrap" />
-      <el-input v-model="listQuery.username" placeholder="请输角色名称" style="width: 200px;" class="filter-item" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
+      <el-input v-model="listQuery.dname" placeholder="请输入部门名称" style="width: 200px;margin-top: 6px" class="filter-item" />
+      <el-input v-model="listQuery.take" placeholder="请输入负责人" style="width: 200px;margin-top: 6px" class="filter-item" />
+      <el-select v-model="listQuery.state" clearable  placeholder="请选择部门状态" >
+        <el-option
+          v-for="item in options"
+          :key="item.state"
+          :label="item.label"
+          :value="item.state">
+        </el-option>
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList" style="margin-top: 7px">
         查询
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;margin-top: 7px" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
@@ -21,37 +30,32 @@
       style="width: 100%;"
     >
       <el-table-column type="selection" />
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
+      <el-table-column label="部门名称" width="200px" align="center" prop="name">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.dname }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="部门名称" width="150px" align="center" prop="name">
+      <el-table-column label="负责人名称" width="200px">
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+          <span>{{ row.take }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="负责人名称" width="150px">
+      <el-table-column label="分管领导" width="200px">
         <template slot-scope="{row}">
-          <span>{{ row.remark }}</span>
+          <span class="link-type">{{ row.leader }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="分管领导" width="150px">
+      <el-table-column label="部门编号" width="200px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.dname }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="部门编号" min-width="150px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.describe }}</span>
+          <span class="link-type">{{ row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="部门状态" width="230px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.create_time | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.state === 0 ? '启用':'禁用' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150px" align="center">
+      <el-table-column label="操作" max-width="150px" align="center">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             修改
@@ -68,7 +72,7 @@
     <!--  绑定了title，是一个数组里取的，表示是修改的标题还是添加的标题
       visible.sync 对话框是否显示
     -->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" style="width: 80%">
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" style="width: 80%;height: 110%">
       <!--
           rules:校验规则
           model:数据绑定
@@ -84,25 +88,44 @@
             @change="handleChange"
           />
         </el-form-item>
-        <el-form-item label="岗位名称名" prop="username">
-          <el-input v-model="temp.remark" placeholder="请输入岗位名" />
+        <el-form-item label="部门名称">
+          <el-input v-model="temp.remark" placeholder="请输入岗位名" style="width: 205px"/>
         </el-form-item>
-        <el-form-item label="岗位简称" prop="password">
-          <el-input v-model="temp.name" placeholder="请输入简称" />
+        <el-form-item label="所属部门">
+          <el-input v-model="temp.name" placeholder="请输入简称" style="width: 205px"/>
         </el-form-item>
-        <el-form-item label="创建者姓名" prop="mobile">
-          <el-input v-model="createBy" :disabled="true" />
+        <el-form-item label="状态">
+          <el-select v-model="temp.state" clearable  placeholder="请选择部门状态" style="margin-top: -100px">
+            <el-option
+              v-for="item in options"
+              :key="item.state"
+              :label="item.label"
+              :value="item.state">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="创建时间" prop="mobile">
-          <el-input v-model="createTime" :disabled="true" />
+        <el-form-item label="部门编号">
+          <el-input :disabled="true" label="自动生成" style="width: 205px"/>
         </el-form-item>
-        <el-form-item label="岗位描述">
-          <el-input
-            v-model="temp.describe"
-            type="textarea"
-            :rows="4"
-            placeholder="请输入岗位描述"
-          />
+        <el-form-item label="分管领导">
+          <el-select v-model="listQuery.state" clearable  placeholder="请选择部门状态" style="margin-top: -100px">
+            <el-option
+              v-for="item in options"
+              :key="item.state"
+              :label="item.label"
+              :value="item.state">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="负责人">
+          <el-select v-model="listQuery.state" clearable  placeholder="请选择部门状态" style="margin-top: -100px">
+            <el-option
+              v-for="item in options"
+              :key="item.state"
+              :label="item.label"
+              :value="item.state">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,6 +158,13 @@ export default {
   admin: 'admin',
   data() {
     return {
+      options: [{
+        state: '0',
+        label: '启用'
+      }, {
+        state: '1',
+        label: '禁用'
+      }],
       deptList: [], // 后台查询出来，分好组的部门信息
       value: [],
       defaultParams: {
@@ -155,7 +185,9 @@ export default {
         page: 1, // 分页需要的当前页
         limit: 10, // 分页需要的每页显示多少条
         sex: 1,
-        name: ''
+        take: '',
+        dname: '',
+        state: ''
       },
       temp: { // 添加、修改时绑定的表单数据
         id: undefined,
@@ -164,7 +196,8 @@ export default {
         name: '',
         createBy: '',
         createTime: '',
-        describe: ''
+        describe: '',
+        state: ''
       },
       title: '添加', // 对话框显示的提示 根据dialogStatus create
       dialogFormVisible: false, // 是否显示对话框

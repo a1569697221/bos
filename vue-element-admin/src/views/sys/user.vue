@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="在职状态" width="100px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type">{{ row.status==1?'在职':'离职' }}</span>
+          <span class="link-type">{{ row.status===1?'在职':'离职' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="角色" min-width="100px" align="center">

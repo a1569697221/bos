@@ -19,6 +19,7 @@ public class SysMenuController {
     @RequestMapping("list")
     public ResponseResult roleList(String name,Integer page,Integer limit){
         System.out.println("进入list");
+        System.out.println(name);
         ResponseResult result = new ResponseResult();
         List<SysRole> roles = sysMenuService.roleList();
         List<SysRole> listpage = sysMenuService.findUserNameByRoleList(name, limit, (page-1)*limit);

@@ -145,7 +145,7 @@ export default {
         checkStrictly: 'true',
         clearable: 'true'
       },
-      createBy: '超级管理员',
+      createBy: '',
       createTime: '', // 当前时间
       tableKey: 0,
       list: null, // 后台返回，给数据表格展示的数据
@@ -178,6 +178,7 @@ export default {
   // 创建实例时的钩子函数
   created() {
     this.getList()
+    this.createBy = sessionStorage.getItem('loginName')
     // 在创建时初始化获得部门信息
     this.getGroupDept()
     var _this = this

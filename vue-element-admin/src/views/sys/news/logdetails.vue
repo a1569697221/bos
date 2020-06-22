@@ -22,13 +22,13 @@
       <el-form-item label="IP地址" prop="username">
         <el-input v-model="list.ip" readonly style="width: 1100px"/>
       </el-form-item>
-      <el-form-item label="服务器" prop="username">
+      <el-form-item label="服务器地址" prop="username">
         <el-input v-model="list.data" readonly style="width: 1100px" />
       </el-form-item>
       <el-form-item label="客户端地址" prop="username">
         <el-input v-model="list.terminal" readonly style="width: 1100px"/>
       </el-form-item>
-      <el-form-item label="浏览器" prop="username">
+      <el-form-item label="访问浏览器" prop="username">
         <el-input v-model="list.type" readonly style="width: 1100px"/>
       </el-form-item>
       <el-form-item label="执行时间" prop="username">

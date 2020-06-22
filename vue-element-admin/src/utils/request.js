@@ -17,7 +17,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    console.debug("request请求的ajax拦截器-utils/request")
+    console.debug('request请求的ajax拦截器-utils/request')
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -25,8 +25,8 @@ service.interceptors.request.use(
       config.headers['X-Token'] = getToken()
     }
     // 如果是post提交，将json数据转为字符串
-    if(config.method  === 'post'){
-      config.data = qs.stringify(config.data);
+    if (config.method === 'post') {
+      config.data = qs.stringify(config.data)
     }
     // 设置数据提交方式为字符串
     config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -35,7 +35,7 @@ service.interceptors.request.use(
   },
   error => {
     console.debug(config)
-    console.debug("request请求的错误-utils/request")
+    console.debug('request请求的错误-utils/request')
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -58,10 +58,10 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     console.debug(res)
-    console.debug("response响应的ajax拦截器-utils/request")
+    console.debug('response响应的ajax拦截器-utils/request')
     // if the custom code is not 20000, it is judged as an error.
     if (res.code === 20001) {
-      console.debug("进入了非20000值的判断里")
+      console.debug('进入了非20000值的判断里')
       Message({
         message: res.message || 'Error',
         type: 'error',
@@ -88,7 +88,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.debug("ajax操作出错-utils/request")
+    console.debug('ajax操作出错-utils/request')
     console.log('err' + error) // for debug
     Message({
       message: error.message,

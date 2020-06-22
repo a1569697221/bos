@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.username" placeholder="请输入岗位名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.name" placeholder="请输入岗位名称" style="width: 200px;" class="filter-item" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
         查询
       </el-button>
@@ -69,10 +69,10 @@
           <el-input v-model="temp.name" placeholder="请输入简称" />
         </el-form-item>
         <el-form-item label="创建者姓名" prop="mobile">
-          <el-input v-model="createBy" readonly="readonly" />
+          <el-input v-model="createBy" :disabled="true" />
         </el-form-item>
         <el-form-item label="创建时间" prop="mobile">
-          <el-input v-model="createTime" readonly />
+          <el-input v-model="createTime" :disabled="true" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,7 +115,7 @@ export default {
         checkStrictly: 'true',
         clearable: 'true'
       },
-      createBy: '超级管理员',
+      createBy: '',
       createTime: '', // 当前时间
       tableKey: 0,
       list: null, // 后台返回，给数据表格展示的数据
@@ -147,6 +147,7 @@ export default {
   },
   // 创建实例时的钩子函数
   created() {
+    this.createBy = sessionStorage.getItem('loginName')
     this.getList()
     // 在创建时初始化获得部门信息
     this.getGroupDept()

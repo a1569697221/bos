@@ -1,8 +1,6 @@
 package com.xr.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,6 +27,10 @@ public class SysDept implements Serializable {
     private Date lastUpdateTime;
 
     private Byte delFlag;
+
+    private Integer leader;
+
+    private Integer takeCharge;
 
     private static final long serialVersionUID = 1L;
 

@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+
 //import com.xr.util.ResponseResult;
 
 @RestController
@@ -21,14 +25,19 @@ public class SysDeptController {
     @RequestMapping("groupDept")
     public ResponseResult groupDept(){
         ResponseResult result = new ResponseResult();
-        System.out.println(sysDeptService.getGroupDept());
         result.getData().put("deptList",sysDeptService.getGroupDept());
         return result;
     }
 
     @RequestMapping("list")
-    public ResponseResult list(String name,Integer page,Integer limit){
+    public ResponseResult list(String take,String dname,Integer state, Integer page, Integer limit, HttpServletRequest request){
         ResponseResult result = new ResponseResult();
+        List<Map<String, Object>> list = sysDeptService.list();
+        List<Map<String, Object>> listpage = sysDeptService.listPage(take, dname, (page-1)*limit, limit, state);
+        System.out.println("URL:"+request.getRequestURI());
+        System.out.println("服务器地址:http://"+request.getServerName()+":"+request.getServerPort());
+        result.getData().put("items",listpage);
+        result.getData().put("total",list.size());
         return result;
     }
 }

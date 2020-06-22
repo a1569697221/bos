@@ -8,6 +8,7 @@ import com.xr.util.SysDeptGroupUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
@@ -28,5 +29,15 @@ public class SysDeptServiceImpl implements SysDeptService {
         }
         System.out.println(deptList);
         return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> listPage(String take, String dname, Integer page, Integer limit, Integer state) {
+        return sysDeptMapper.listPage(take,dname,page,limit,state);
+    }
+
+    @Override
+    public List<Map<String, Object>> list() {
+        return sysDeptMapper.list();
     }
 }

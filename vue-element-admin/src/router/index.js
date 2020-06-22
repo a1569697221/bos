@@ -143,7 +143,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'user',
+        path: 'dept',
         component: () => import('../views/sys/dept'),
         name: 'dept',
         meta: { title: '机构管理', roles: ['admin'] }

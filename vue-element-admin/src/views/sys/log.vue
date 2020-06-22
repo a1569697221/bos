@@ -4,7 +4,7 @@
       <font>用户名：</font>
       <el-input v-model="listQuery.username" placeholder="请输入用户名称" style="width: 200px;" class="filter-item" />
       日志标题：
-      <el-input v-model="listQuery.title" placeholder="请输入用户名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.title" placeholder="请输入日志标题" style="width: 200px;" class="filter-item" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">
         查询
       </el-button>

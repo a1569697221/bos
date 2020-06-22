@@ -127,6 +127,7 @@ public class UsersController {
                 result.getData().put("introduction",loginUser.getIntroduction());
                 result.getData().put("avatar",loginUser.getAvatar());
                 result.getData().put("name",loginUser.getUsername());
+                result.getData().put("id",loginUser.getId());
                 return result;
             }
         }

@@ -52,7 +52,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       console.debug('store里的user.js getInfo方法')
-      console.debug('getInfo:'+getToken())
+      console.debug('getInfo:' + getToken())
       getInfo(state.token).then(response => {
         console.debug(state)
         const { data } = response
@@ -60,7 +60,7 @@ const actions = {
           reject('验证失败，请重新登录')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { roles, name, avatar, introduction, id } = data
 
         // roles 必须是非空数组
         if (!roles || roles.length <= 0) {
@@ -69,8 +69,10 @@ const actions = {
         // 更新store里的角色，用户名，图片，个人介绍
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3468255738,1023314349&fm=26&gp=0.jpg')
         commit('SET_INTRODUCTION', introduction)
+        sessionStorage.setItem('loginName', name)
+        sessionStorage.setItem('id', id)
         resolve(data)
       }).catch(error => {
         reject(error)
