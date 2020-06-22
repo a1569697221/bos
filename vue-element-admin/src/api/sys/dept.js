@@ -15,7 +15,7 @@ export function add(data) {
   })
 }
 
-export function deleteUser(id) {
+export function del(id) {
   return request({
     url: '/dept/delete',
     method: 'get',

@@ -17,7 +17,6 @@ public class SysLogController {
 
     @RequestMapping("list")
     public ResponseResult list(String username,String title,Integer page,Integer limit){
-        System.out.println("进入list");
         List<SysLog> logPageList = sysLogMapper.logPageList(username,title, (page-1)*limit, limit);
         List<SysLog> list = sysLogMapper.logList();
         ResponseResult result = new ResponseResult();

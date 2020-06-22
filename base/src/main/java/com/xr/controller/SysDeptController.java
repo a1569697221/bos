@@ -25,4 +25,10 @@ public class SysDeptController {
         result.getData().put("deptList",sysDeptService.getGroupDept());
         return result;
     }
+
+    @RequestMapping("list")
+    public ResponseResult list(String name,Integer page,Integer limit){
+        ResponseResult result = new ResponseResult();
+        return result;
+    }
 }

@@ -26,27 +26,27 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="编码" width="150px" align="center" prop="name">
+      <el-table-column label="部门名称" width="150px" align="center" prop="name">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="岗位名称" width="150px">
+      <el-table-column label="负责人名称" width="150px">
         <template slot-scope="{row}">
           <span>{{ row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="所属部门" width="150px">
+      <el-table-column label="分管领导" width="150px">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.dname }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="岗位描述" min-width="150px" align="center">
+      <el-table-column label="部门编号" min-width="150px" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.describe }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="230px" align="center">
+      <el-table-column label="部门状态" width="230px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.create_time | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -123,13 +123,13 @@
 
 <script>
 //
-import { add, update, list, deleteUser } from '@/api/sys/roles'
+import { add, update, list, del } from '@/api/sys/dept'
 import { groupDept } from '@/api/sys/dept'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // 分页组件
 export default {
-  name: 'RolesTable',
+  name: 'DeptTable',
   components: { Pagination },
   directives: { waves },
   admin: 'admin',
@@ -309,7 +309,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用ajax去后台删除
-        deleteUser(row.id).then((response) => {
+        del(row.id).then((response) => {
           // 刷新数据表格
           this.getList()
           // ajax去后台删除

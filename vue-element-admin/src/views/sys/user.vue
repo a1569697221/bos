@@ -83,29 +83,16 @@
           rules:校验规则
           model:数据绑定
       -->
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 80%; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 70%; margin-left:60px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
-        <el-form-item label="部门" prop="sex">
-          <el-select v-model="temp.deptId" placeholder="请选择">
-            <el-option-group
-              v-for="group in deptList"
-              :key="group.id"
-              :label="group.name"
-            >
-              <el-option-group
-                v-for="items in group.items"
-                :key="items.id"
-                :label="items.name"
-              >
-                <el-option
-                  v-for="item in items.items"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-option-group>
-            </el-option-group>
-          </el-select>
+        <el-form-item label="部门">
+          <el-cascader
+            v-model="value"
+            :options="deptList"
+            :props="defaultParams"
+            :show-all-levels="false"
+            @change="handleChange"
+          />
         </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="temp.username" placeholder="请输入用户名" show-word-limit maxlength="12" minlength="6" />
@@ -137,10 +124,6 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <!--
-          dialogStatus==='create'?createData():updateData()
-          dialogStatus需要我们根据情况去改变
-        -->
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
@@ -173,6 +156,15 @@ export default {
         username: ''
       },
       deptList: [], // 后台查询出来，分好组的部门信息
+      value: [],
+      defaultParams: {
+        value: 'id',
+        label: 'name',
+        children: 'items',
+        expandTrigger: 'hover',
+        checkStrictly: 'true',
+        clearable: 'true'
+      },
       temp: { // 添加、修改时绑定的表单数据
         id: undefined,
         name: '',
@@ -198,6 +190,9 @@ export default {
     this.getGroupDept()
   },
   methods: {
+    handleChange(value) {
+      console.log(value)
+    },
     // 获得分好组的部门信息
     getGroupDept() {
       groupDept().then((response) => {

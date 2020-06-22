@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button style="margin-left: 1130px;" icon="el-icon-back" plain @click="back">返回</el-button>
+      <el-button style="margin-left: 1150px;" icon="el-icon-back" plain @click="back">返回</el-button>
     </div>
-    <el-form ref="dataForm" :model="this.list" label-position="left" label-width="70px" style="width: 80%; margin-left:50px;">
+    <el-form ref="dataForm" :model="this.list" label-position="left" label-width="90px" style="width: 80%; margin-left:50px;">
       <el-form-item label="编号" prop="username">
         <el-input v-model="list.id" readonly style="width: 1100px"/>
       </el-form-item>
@@ -25,7 +25,7 @@
       <el-form-item label="服务器" prop="username">
         <el-input v-model="list.data" readonly style="width: 1100px" />
       </el-form-item>
-      <el-form-item label="客户端" prop="username">
+      <el-form-item label="客户端地址" prop="username">
         <el-input v-model="list.terminal" readonly style="width: 1100px"/>
       </el-form-item>
       <el-form-item label="浏览器" prop="username">
